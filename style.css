@@ -1,4 +1,3 @@
-```css
 :root{
   --bg: radial-gradient(circle at top, #ffd1dc, #ffb6c1);
   --env-bg: #fde6cf;
@@ -17,18 +16,11 @@
 
 body{
   height:100vh;
-  background:var(--bg);
   display:flex;
-  align-items:center;
   justify-content:center;
-  font-family:'Segoe UI',sans-serif;
-  overflow:hidden;
-}
-
-.container{
-  display:grid;
-  place-items:center;
-  overflow:visible;
+  align-items:center;
+  background:var(--bg);
+  font-family:'Segoe UI', sans-serif;
 }
 
 .envelope-wrapper{
@@ -36,20 +28,19 @@ body{
   width:360px;
   height:280px;
   cursor:pointer;
-  filter:drop-shadow(0 25px 40px var(--shadow));
-  perspective:1200px;
+  perspective:1000px;
 }
 
+/* BACK ENVELOPE */
 .envelope{
-  position:relative;
+  position:absolute;
   width:100%;
   height:100%;
   background:var(--env-bg);
-  border-radius:4px;
   overflow:visible;
 }
 
-/* top flap */
+/* TOP FLAP */
 .envelope::before{
   content:"";
   position:absolute;
@@ -57,15 +48,15 @@ body{
   left:0;
   width:0;
   height:0;
-  border-top:150px solid var(--env-tab);
   border-left:180px solid transparent;
   border-right:180px solid transparent;
+  border-top:150px solid var(--env-tab);
   transform-origin:top;
-  transition:transform .85s ease, z-index .3s ease;
-  z-index:6;
+  transition:transform 0.8s ease;
+  z-index:30;
 }
 
-/* envelope body */
+/* FRONT COVER */
 .envelope::after{
   content:"";
   position:absolute;
@@ -77,139 +68,98 @@ body{
   border-right:180px solid var(--env-cover);
   border-bottom:130px solid var(--env-cover);
   border-top:150px solid transparent;
-  z-index:2;
-}
-
-/* letter */
-.letter{
-  position:absolute;
-  bottom:18px;
-  left:50%;
-  transform:translateX(-50%);
-  width:78%;
-  height:74%;
-  background:white;
-  padding:16px 14px;
-  border-radius:10px;
-  box-shadow:0 10px 20px rgba(0,0,0,.18);
-  transition:all 1s cubic-bezier(.22,.61,.36,1);
-  overflow:hidden;
-  z-index:3;
-}
-
-/* OPEN STATE */
-.flap .letter{
-  bottom:170px;
-  height:260px;
-  width:82%;
-  overflow-y:auto;
-  transform:translateX(-50%) scale(1.02);
   z-index:20;
 }
 
-/* text */
+/* LETTER */
+.letter{
+  position:absolute;
+  left:50%;
+  bottom:20px;
+  transform:translateX(-50%);
+  width:78%;
+  height:75%;
+  background:white;
+  border-radius:12px;
+  padding:18px;
+  box-shadow:0 15px 25px rgba(0,0,0,0.15);
+  transition:all 0.9s cubic-bezier(.22,.61,.36,1);
+  z-index:10;
+  overflow:hidden;
+}
+
+/* OPEN LETTER */
+.flap .letter{
+  bottom:150px;
+  height:280px;
+  overflow-y:auto;
+  z-index:50;
+}
+
+/* FLAP GOES BACK */
+.flap .envelope::before{
+  transform:rotateX(180deg);
+  z-index:1;
+}
+
+/* TEXT */
 .text{
-  font-size:12px;
+  font-size:14px;
   line-height:1.6;
   color:var(--text);
 }
 
 .text strong{
   display:block;
-  font-size:14px;
-  margin-bottom:10px;
+  font-size:16px;
+  margin-bottom:14px;
 }
 
-/* heart */
+/* HEART */
 .heart{
   position:absolute;
   top:52%;
   left:50%;
-  width:18px;
-  height:18px;
+  width:22px;
+  height:22px;
   background:var(--heart);
   transform:translate(-50%,-50%) rotate(45deg);
+  z-index:60;
   animation:pulse 1.2s infinite;
-  z-index:10;
 }
 
 .heart::before,
 .heart::after{
   content:"";
   position:absolute;
-  width:18px;
-  height:18px;
+  width:22px;
+  height:22px;
   background:var(--heart);
   border-radius:50%;
 }
 
 .heart::before{
-  top:-9px;
+  top:-11px;
   left:0;
 }
 
 .heart::after{
+  left:-11px;
   top:0;
-  left:-9px;
 }
 
 @keyframes pulse{
-  0%{
-    transform:translate(-50%,-50%) scale(1) rotate(45deg);
-  }
-  50%{
-    transform:translate(-50%,-50%) scale(1.25) rotate(45deg);
-  }
-  100%{
-    transform:translate(-50%,-50%) scale(1) rotate(45deg);
-  }
+  0%{transform:translate(-50%,-50%) rotate(45deg) scale(1);}
+  50%{transform:translate(-50%,-50%) rotate(45deg) scale(1.2);}
+  100%{transform:translate(-50%,-50%) rotate(45deg) scale(1);}
 }
 
-/* flap opens */
-.flap .envelope::before{
-  transform:rotateX(180deg);
-  z-index:1;
-}
-
-/* heart stops animating */
-.flap .heart{
-  animation:none;
-  transform:translate(-50%,-50%) rotate(90deg);
-}
-
-/* scrollbar styling */
-.flap .letter::-webkit-scrollbar{
+/* SCROLLBAR */
+.letter::-webkit-scrollbar{
   width:6px;
 }
 
-.flap .letter::-webkit-scrollbar-thumb{
-  background:#ff98b4;
+.letter::-webkit-scrollbar-thumb{
+  background:#ff9cb8;
   border-radius:10px;
 }
-
-/* mobile responsive */
-@media(max-width:420px){
-  .envelope-wrapper{
-    width:310px;
-    height:250px;
-  }
-
-  .envelope::before{
-    border-top:130px solid var(--env-tab);
-    border-left:155px solid transparent;
-    border-right:155px solid transparent;
-  }
-
-  .envelope::after{
-    border-left:155px solid var(--env-cover);
-    border-right:155px solid var(--env-cover);
-    border-bottom:120px solid var(--env-cover);
-    border-top:130px solid transparent;
-  }
-
-  .flap .letter{
-    bottom:150px;
-    height:240px;
-  }
-}
-```
