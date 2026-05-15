@@ -1,3 +1,4 @@
+```css
 :root{
   --bg: radial-gradient(circle at top, #ffd1dc, #ffb6c1);
   --env-bg: #fde6cf;
@@ -8,21 +9,26 @@
   --heart: #ff2d75;
 }
 
-*{ box-sizing:border-box; }
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
 body{
-  margin:0;
   height:100vh;
   background:var(--bg);
   display:flex;
   align-items:center;
   justify-content:center;
   font-family:'Segoe UI',sans-serif;
+  overflow:hidden;
 }
 
 .container{
   display:grid;
   place-items:center;
+  overflow:visible;
 }
 
 .envelope-wrapper{
@@ -30,41 +36,43 @@ body{
   width:360px;
   height:280px;
   cursor:pointer;
-  filter: drop-shadow(0 25px 40px var(--shadow));
+  filter:drop-shadow(0 25px 40px var(--shadow));
+  perspective:1200px;
 }
 
-/* ✅ IMPORTANT: remove overflow hidden from envelope */
 .envelope{
   position:relative;
   width:100%;
   height:100%;
   background:var(--env-bg);
   border-radius:4px;
-  overflow: visible; /* ✅ so letter can come outside */
+  overflow:visible;
 }
 
-/* flap */
+/* top flap */
 .envelope::before{
   content:"";
   position:absolute;
   top:0;
   left:0;
-  width:0;height:0;
+  width:0;
+  height:0;
   border-top:150px solid var(--env-tab);
   border-left:180px solid transparent;
   border-right:180px solid transparent;
-  transform-origin: top;
-  transition: transform .85s ease;
+  transform-origin:top;
+  transition:transform .85s ease, z-index .3s ease;
   z-index:6;
 }
 
-/* body */
+/* envelope body */
 .envelope::after{
   content:"";
   position:absolute;
   bottom:0;
   left:0;
-  width:0;height:0;
+  width:0;
+  height:0;
   border-left:180px solid var(--env-cover);
   border-right:180px solid var(--env-cover);
   border-bottom:130px solid var(--env-cover);
@@ -72,7 +80,7 @@ body{
   z-index:2;
 }
 
-/* ✅ LETTER (closed state inside) */
+/* letter */
 .letter{
   position:absolute;
   bottom:18px;
@@ -84,18 +92,19 @@ body{
   padding:16px 14px;
   border-radius:10px;
   box-shadow:0 10px 20px rgba(0,0,0,.18);
-  transition: all 1s cubic-bezier(.22,.61,.36,1);
-  overflow:hidden; /* closed state */
+  transition:all 1s cubic-bezier(.22,.61,.36,1);
+  overflow:hidden;
   z-index:3;
 }
 
-/* ✅ Open state: FULL OPEN + SCROLL */
+/* OPEN STATE */
 .flap .letter{
-  bottom:180px; /* ✅ now letter fully comes out */
-  height:260px; /* ✅ bigger letter */
+  bottom:170px;
+  height:260px;
   width:82%;
-  overflow-y:auto; /* ✅ scroll will work */
+  overflow-y:auto;
   transform:translateX(-50%) scale(1.02);
+  z-index:20;
 }
 
 /* text */
@@ -111,7 +120,7 @@ body{
   margin-bottom:10px;
 }
 
-/* ✅ Heart */
+/* heart */
 .heart{
   position:absolute;
   top:52%;
@@ -134,38 +143,56 @@ body{
   border-radius:50%;
 }
 
-.heart::before{ top:-9px; left:0; }
-.heart::after{ left:-9px; top:0; }
+.heart::before{
+  top:-9px;
+  left:0;
+}
+
+.heart::after{
+  top:0;
+  left:-9px;
+}
 
 @keyframes pulse{
-  0%{ transform:translate(-50%,-50%) scale(1) rotate(45deg); }
-  50%{ transform:translate(-50%,-50%) scale(1.25) rotate(45deg); }
-  100%{ transform:translate(-50%,-50%) scale(1) rotate(45deg); }
+  0%{
+    transform:translate(-50%,-50%) scale(1) rotate(45deg);
+  }
+  50%{
+    transform:translate(-50%,-50%) scale(1.25) rotate(45deg);
+  }
+  100%{
+    transform:translate(-50%,-50%) scale(1) rotate(45deg);
+  }
 }
 
-/* open flap */
+/* flap opens */
 .flap .envelope::before{
-  transform: rotateX(180deg);
+  transform:rotateX(180deg);
+  z-index:1;
 }
 
-/* heart open */
+/* heart stops animating */
 .flap .heart{
   animation:none;
   transform:translate(-50%,-50%) rotate(90deg);
 }
 
-/* ✅ Smooth Scroll look */
+/* scrollbar styling */
 .flap .letter::-webkit-scrollbar{
   width:6px;
 }
+
 .flap .letter::-webkit-scrollbar-thumb{
   background:#ff98b4;
   border-radius:10px;
 }
 
-/* responsive */
+/* mobile responsive */
 @media(max-width:420px){
-  .envelope-wrapper{ width:310px; height:250px; }
+  .envelope-wrapper{
+    width:310px;
+    height:250px;
+  }
 
   .envelope::before{
     border-top:130px solid var(--env-tab);
@@ -181,7 +208,8 @@ body{
   }
 
   .flap .letter{
-    bottom:160px;
+    bottom:150px;
     height:240px;
   }
 }
+```
